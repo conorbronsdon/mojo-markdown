@@ -7,5 +7,8 @@ paragraphs, fenced and indented code blocks, blockquotes, ordered and
 unordered lists, thematic breaks, HTML blocks, link reference
 definitions) and inline parser (code spans, emphasis/strong, links,
 images, reference links, autolinks, escapes, entities) with an HTML
-renderer. 638 of 652 examples (97.9%) from the CommonMark 0.31.2 spec
+renderer. 638 of 652 examples (98.6%) from the CommonMark 0.31.2 spec
 test suite pass; the hand-written unit suite passes completely.
+
+Robustness: fuzzing surfaced an unbounded-recursion stack overflow on
+deeply nested containers, fixed with a 256-level nesting cap before release.
