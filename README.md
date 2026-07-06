@@ -21,6 +21,19 @@ flanking rules, the multiple-of-3 rule, and nested delimiter runs. This one
 passes all 132. I built it to run alongside mojo-feed and mojo-captions in
 the content pipeline behind Chain of Thought.
 
+### Coming from Python
+
+If you know Python's `markdown`, the one-call entry point maps directly:
+
+| Python (`markdown`)        | mojo-markdown          |
+| -------------------------- | ---------------------- |
+| `markdown.markdown(text)`  | `render_html(text)`    |
+
+For lower-level access, `parse_blocks(text)` returns the block-level AST
+(`BlockTree`) that `render_html` renders — there is no Python `markdown`
+parallel for that arena representation, so this section stays intentionally
+minimal to the verified public surface.
+
 ## What it handles
 
 - **Blocks**: ATX and setext headings, paragraphs with lazy continuation,
@@ -128,9 +141,11 @@ realistic document.
 
 ## Part of a pure-Mojo library suite
 
-Ten pure-Mojo libraries that mirror familiar Python stdlib and PyPI APIs,
+Eleven pure-Mojo libraries that mirror familiar Python stdlib and PyPI APIs,
 filling gaps in the native Mojo ecosystem:
 
+- [mojo-xml](https://github.com/conorbronsdon/mojo-xml) — general-purpose XML
+  parsing, an ElementTree-shaped DOM (Python's `xml.etree.ElementTree`)
 - [mojo-feed](https://github.com/conorbronsdon/mojo-feed) — RSS, Atom, and
   JSON Feed parsing (Python's `feedparser`)
 - [mojo-captions](https://github.com/conorbronsdon/mojo-captions) — SRT and
