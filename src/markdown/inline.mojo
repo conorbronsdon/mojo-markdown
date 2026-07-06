@@ -398,9 +398,12 @@ def _parse_inline_suffix(s: String, lparen: Int) -> _LinkSuffix:
 def _strip_tags(html: String) -> String:
     """Remove HTML tags, leaving text content (for image alt attributes).
 
-    Operates on already-escaped inline HTML, so `<`/`>` only appear as tag
-    delimiters and attribute values never contain a raw `>`. A nested
-    `<img>` contributes its `alt` text rather than vanishing.
+    Operates on inline HTML. Raw inline HTML passes through verbatim, so an
+    attribute value *can* contain a raw `>` (e.g. `<span title="a>b">`). The
+    tag scan is therefore quote-aware: it only treats a `>` outside a quoted
+    attribute as the tag terminator, so such a `>` cannot break out of the
+    surrounding `alt="…"` attribute. A nested `<img>` contributes its `alt`
+    text rather than vanishing.
     """
     var bytes = html.as_bytes()
     var n = len(bytes)
@@ -409,8 +412,22 @@ def _strip_tags(html: String) -> String:
     while i < n:
         var b = bytes[i]
         if b == LT:
+            # Scan to the tag's closing `>`, skipping over quoted attribute
+            # values so a raw `>` inside an attribute does not end the tag
+            # early.
             var j = i + 1
-            while j < n and bytes[j] != GT:
+            var in_quote = False
+            var quote_ch = UInt8(0)
+            while j < n:
+                var c = bytes[j]
+                if in_quote:
+                    if c == quote_ch:
+                        in_quote = False
+                elif c == QUOTE or c == SQUOTE:
+                    in_quote = True
+                    quote_ch = c
+                elif c == GT:
+                    break
                 j += 1
             # A nested image keeps its alt text.
             if _match_bytes(bytes, i + 1, "img ") or _match_bytes(
