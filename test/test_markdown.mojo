@@ -194,6 +194,28 @@ def test_image_alt_is_plain_text() raises:
     )
 
 
+def test_image_alt_raw_html_gt_no_breakout() raises:
+    # A raw `>` inside a quoted attribute of raw HTML in the image
+    # description must not terminate the tag early and break out of the
+    # generated alt="…" attribute. Raw HTML contributes no alt text, so
+    # only the trailing literal `x` survives.
+    assert_equal(
+        render_html(String('![<span title="a>b">x](/i.png)')),
+        '<p><img src="/i.png" alt="x" /></p>\n',
+    )
+    # Single-quoted attribute value is handled the same way.
+    assert_equal(
+        render_html(String("![<span title='a>b'>x](/i.png)")),
+        '<p><img src="/i.png" alt="x" /></p>\n',
+    )
+    # A nested <img> still contributes its alt text, even when a later
+    # attribute contains a raw `>`.
+    assert_equal(
+        render_html(String('![<img alt="D" title="a>b">z](/i.png)')),
+        '<p><img src="/i.png" alt="Dz" /></p>\n',
+    )
+
+
 def test_autolink() raises:
     assert_equal(
         render_html("<https://example.com>"),
