@@ -38,7 +38,11 @@ comptime PERIOD = UInt8(0x2E)
 
 def is_space_byte(b: UInt8) -> Bool:
     return (
-        b == 0x20 or b == 0x09 or b == 0x0A or b == 0x0B or b == 0x0C
+        b == 0x20
+        or b == 0x09
+        or b == 0x0A
+        or b == 0x0B
+        or b == 0x0C
         or b == 0x0D
     )
 
@@ -359,13 +363,18 @@ def scan_html_tag(s: String, start: Int) -> Int:
     if i >= n:
         return 0
     # Comment: <!-- ... -->  (also permits <!--> and <!--->)
-    if i + 2 < n and bytes[i] == BANG and bytes[i + 1] == DASH and (
-        bytes[i + 2] == DASH
+    if (
+        i + 2 < n
+        and bytes[i] == BANG
+        and bytes[i + 1] == DASH
+        and (bytes[i + 2] == DASH)
     ):
         var j = i + 1
         while j + 2 < n:
-            if bytes[j] == DASH and bytes[j + 1] == DASH and (
-                bytes[j + 2] == GT
+            if (
+                bytes[j] == DASH
+                and bytes[j + 1] == DASH
+                and (bytes[j + 2] == GT)
             ):
                 return j + 3 - start
             j += 1
@@ -374,8 +383,10 @@ def scan_html_tag(s: String, start: Int) -> Int:
     if _match_at(s, i, "![CDATA["):
         var j = i + 8
         while j + 2 < n:
-            if bytes[j] == UInt8(0x5D) and bytes[j + 1] == UInt8(0x5D) and (
-                bytes[j + 2] == GT
+            if (
+                bytes[j] == UInt8(0x5D)
+                and bytes[j + 1] == UInt8(0x5D)
+                and (bytes[j + 2] == GT)
             ):
                 return j + 3 - start
             j += 1
@@ -436,9 +447,13 @@ def scan_html_tag(s: String, start: Int) -> Int:
         i += 1
         while i < n:
             b = bytes[i]
-            if is_alnum_byte(b) or b == UNDERSCORE or b == COLON or (
-                b == PERIOD
-            ) or b == DASH:
+            if (
+                is_alnum_byte(b)
+                or b == UNDERSCORE
+                or b == COLON
+                or (b == PERIOD)
+                or b == DASH
+            ):
                 i += 1
             else:
                 break
@@ -464,9 +479,15 @@ def scan_html_tag(s: String, start: Int) -> Int:
                 var vlen = 0
                 while i < n:
                     b = bytes[i]
-                    if is_space_byte(b) or b == QUOTE or b == SQUOTE or (
-                        b == EQUALS
-                    ) or b == LT or b == GT or b == BACKTICK:
+                    if (
+                        is_space_byte(b)
+                        or b == QUOTE
+                        or b == SQUOTE
+                        or (b == EQUALS)
+                        or b == LT
+                        or b == GT
+                        or b == BACKTICK
+                    ):
                         break
                     i += 1
                     vlen += 1
@@ -527,8 +548,12 @@ def is_uni_space(cp: Int) -> Bool:
         return True
     if cp >= 0x2000 and cp <= 0x200A:
         return True
-    return cp == 0x2028 or cp == 0x2029 or cp == 0x202F or cp == 0x205F or (
-        cp == 0x3000
+    return (
+        cp == 0x2028
+        or cp == 0x2029
+        or cp == 0x202F
+        or cp == 0x205F
+        or (cp == 0x3000)
     )
 
 

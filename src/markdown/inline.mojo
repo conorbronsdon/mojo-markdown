@@ -75,17 +75,37 @@ struct _Chunk(Copyable, Movable):
     @staticmethod
     def text(var html: String) -> _Chunk:
         return _Chunk(
-            html^, False, UInt8(0), 0, 0, False, False, List[Int](),
-            List[Int](), False, False, False, 0,
+            html^,
+            False,
+            UInt8(0),
+            0,
+            0,
+            False,
+            False,
+            List[Int](),
+            List[Int](),
+            False,
+            False,
+            False,
+            0,
         )
 
     @staticmethod
-    def delim(
-        ch: UInt8, count: Int, can_open: Bool, can_close: Bool
-    ) -> _Chunk:
+    def delim(ch: UInt8, count: Int, can_open: Bool, can_close: Bool) -> _Chunk:
         return _Chunk(
-            String(), True, ch, count, count, can_open, can_close,
-            List[Int](), List[Int](), False, False, False, 0,
+            String(),
+            True,
+            ch,
+            count,
+            count,
+            can_open,
+            can_close,
+            List[Int](),
+            List[Int](),
+            False,
+            False,
+            False,
+            0,
         )
 
     @staticmethod
@@ -94,8 +114,19 @@ struct _Chunk(Copyable, Movable):
         if is_image:
             lit = String("![")
         return _Chunk(
-            lit^, False, UInt8(0), 0, 0, False, False, List[Int](),
-            List[Int](), True, True, is_image, pos,
+            lit^,
+            False,
+            UInt8(0),
+            0,
+            0,
+            False,
+            False,
+            List[Int](),
+            List[Int](),
+            True,
+            True,
+            is_image,
+            pos,
         )
 
 
@@ -202,8 +233,11 @@ def _try_autolink_uri(s: String, start: Int) -> Int:
     i += 1
     while i < n and scheme_len < 32:
         var b = bytes[i]
-        if is_alnum_byte(b) or b == UInt8(0x2B) or b == UInt8(0x2D) or (
-            b == UInt8(0x2E)
+        if (
+            is_alnum_byte(b)
+            or b == UInt8(0x2B)
+            or b == UInt8(0x2D)
+            or (b == UInt8(0x2E))
         ):
             scheme_len += 1
             i += 1
@@ -442,7 +476,9 @@ def _strip_tags(html: String) -> String:
                     var e = alt_start
                     while e < j and bytes[e] != QUOTE:
                         e += 1
-                    out += String(StringSlice(unsafe_from_utf8=bytes[alt_start:e]))
+                    out += String(
+                        StringSlice(unsafe_from_utf8=bytes[alt_start:e])
+                    )
             i = j + 1
         else:
             out += byte_char(b)
@@ -671,11 +707,18 @@ def _tokenize(s: String, refs: RefMap) raises -> List[_Chunk]:
             var run = i
             while i < n:
                 b = bytes[i]
-                if b == BSLASH or b == NEWLINE or b == BACKTICK or (
-                    b == STAR
-                ) or b == UNDERSCORE or b == LT or b == AMP or (
-                    b == LBRACKET
-                ) or b == RBRACKET or b == BANG:
+                if (
+                    b == BSLASH
+                    or b == NEWLINE
+                    or b == BACKTICK
+                    or (b == STAR)
+                    or b == UNDERSCORE
+                    or b == LT
+                    or b == AMP
+                    or (b == LBRACKET)
+                    or b == RBRACKET
+                    or b == BANG
+                ):
                     break
                 i += 1
             if i == run:

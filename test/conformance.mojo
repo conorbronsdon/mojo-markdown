@@ -70,7 +70,10 @@ def main() raises:
     print("-----------------------------")
     for k in range(len(section_names)):
         print(
-            section_names[k] + ": " + String(section_pass[k]) + "/"
+            section_names[k]
+            + ": "
+            + String(section_pass[k])
+            + "/"
             + String(section_total[k])
         )
     print("-----------------------------")

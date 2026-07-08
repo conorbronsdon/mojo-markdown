@@ -395,14 +395,19 @@ def _html_block_type(line: String) -> Int:
         name += byte_char(to_lower_byte(bytes[p]))
         p += 1
     var terminated = p >= n or bytes[p] == SPACE or bytes[p] == GT
-    if not terminated and bytes[p] == SLASH and p + 1 < n and (
-        bytes[p + 1] == GT
+    if (
+        not terminated
+        and bytes[p] == SLASH
+        and p + 1 < n
+        and (bytes[p + 1] == GT)
     ):
         terminated = True
     if not terminated:
         return 0
     if not closing and (
-        name == "script" or name == "pre" or name == "style"
+        name == "script"
+        or name == "pre"
+        or name == "style"
         or name == "textarea"
     ):
         return 1
@@ -410,8 +415,11 @@ def _html_block_type(line: String) -> Int:
         return 6
     # Type 7: a complete tag, alone on its line (cannot interrupt a
     # paragraph — callers treat 7 specially).
-    if name == "script" or name == "pre" or name == "style" or (
-        name == "textarea"
+    if (
+        name == "script"
+        or name == "pre"
+        or name == "style"
+        or (name == "textarea")
     ):
         return 0
     var tag_len = scan_html_tag(line, i)
@@ -588,8 +596,10 @@ def _parse_defs(mut refs: RefMap, content: String) -> String:
         var got_title = False
         var title = String()
         var after_title = 0
-        if had_ws and t < n and (
-            bytes[t] == QUOTE or bytes[t] == SQUOTE or bytes[t] == LPAREN
+        if (
+            had_ws
+            and t < n
+            and (bytes[t] == QUOTE or bytes[t] == SQUOTE or bytes[t] == LPAREN)
         ):
             var closer = bytes[t]
             if closer == LPAREN:

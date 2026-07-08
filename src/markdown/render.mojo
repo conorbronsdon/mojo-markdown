@@ -48,14 +48,20 @@ def _render_block(tree: BlockTree, idx: Int, tight: Bool) raises -> String:
         if tight:
             return render_inlines(tree.nodes[idx].text, tree.refs)
         return (
-            String("<p>") + render_inlines(tree.nodes[idx].text, tree.refs) + "</p>\n"
+            String("<p>")
+            + render_inlines(tree.nodes[idx].text, tree.refs)
+            + "</p>\n"
         )
     if kind == B_HEADING:
         var level = String(tree.nodes[idx].level)
         return (
-            String("<h") + level + ">"
+            String("<h")
+            + level
+            + ">"
             + render_inlines(tree.nodes[idx].text, tree.refs)
-            + "</h" + level + ">\n"
+            + "</h"
+            + level
+            + ">\n"
         )
     if kind == B_CODE:
         var out = String("<pre><code")
@@ -63,8 +69,10 @@ def _render_block(tree: BlockTree, idx: Int, tight: Bool) raises -> String:
         if info.byte_length() > 0:
             var ib = info.as_bytes()
             var word_end = 0
-            while word_end < len(ib) and ib[word_end] != SPACE and (
-                ib[word_end] != TAB
+            while (
+                word_end < len(ib)
+                and ib[word_end] != SPACE
+                and (ib[word_end] != TAB)
             ):
                 word_end += 1
             out += ' class="language-'
@@ -94,7 +102,8 @@ def _render_block(tree: BlockTree, idx: Int, tight: Bool) raises -> String:
             var open_tag = String("<ol>\n")
             if tree.nodes[idx].level != 1:
                 open_tag = (
-                    String('<ol start="') + String(tree.nodes[idx].level)
+                    String('<ol start="')
+                    + String(tree.nodes[idx].level)
                     + '">\n'
                 )
             return open_tag + items + "</ol>\n"

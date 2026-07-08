@@ -23,9 +23,7 @@ def test_paragraph() raises:
 
 
 def test_paragraph_separation() raises:
-    assert_equal(
-        render_html("aaa\n\nbbb"), "<p>aaa</p>\n<p>bbb</p>\n"
-    )
+    assert_equal(render_html("aaa\n\nbbb"), "<p>aaa</p>\n<p>bbb</p>\n")
 
 
 def test_setext_heading() raises:
@@ -125,14 +123,13 @@ def test_loose_list() raises:
 
 
 def test_code_span() raises:
-    assert_equal(render_html("use `x = 1` here"),
-        "<p>use <code>x = 1</code> here</p>\n")
+    assert_equal(
+        render_html("use `x = 1` here"), "<p>use <code>x = 1</code> here</p>\n"
+    )
 
 
 def test_double_backtick_code_span() raises:
-    assert_equal(
-        render_html("`` a`b ``"), "<p><code>a`b</code></p>\n"
-    )
+    assert_equal(render_html("`` a`b ``"), "<p><code>a`b</code></p>\n")
 
 
 def test_emphasis() raises:
