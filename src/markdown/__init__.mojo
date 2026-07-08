@@ -1,4 +1,4 @@
-"""mojo-markdown: CommonMark parsing and HTML rendering in pure Mojo."""
+"""CommonMark parsing and HTML rendering in pure Mojo (mojo-markdown)."""
 
 from markdown.block import (
     Block,
