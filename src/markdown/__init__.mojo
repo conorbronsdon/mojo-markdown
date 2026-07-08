@@ -14,5 +14,6 @@ from markdown.block import (
     B_ITEM,
     B_BREAK,
 )
+from markdown.errors import line_col, parse_error
 from markdown.inline import render_inlines
 from markdown.render import render_html

@@ -30,3 +30,6 @@ jobs:
 
       - name: Tests
         run: .venv/bin/mojo run -I src test/test_markdown.mojo
+
+      - name: Unit tests — parse-error positions
+        run: .venv/bin/mojo run -I src test/test_errors.mojo
