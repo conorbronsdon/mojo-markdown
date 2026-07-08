@@ -10,6 +10,9 @@ version = "0.1.0"
 test = "mojo run -I src test/test_markdown.mojo"
 conformance = "mojo run -I src test/conformance.mojo"
 fuzz = "mojo run -I src test/fuzz_runner.mojo"
+bench = "mojo build -I src bench/bench_parse.mojo -o .bench_parse && ./.bench_parse"
+fmt = "mojo format src/ test/ bench/"
+docs = "mojo doc -o docs/api.json -I src src/markdown && python3 docs/render_api.py docs/api.json docs/api.html"
 
 [dependencies]
 mojo = ">=1.0.0b3.dev2026070506,<2"
